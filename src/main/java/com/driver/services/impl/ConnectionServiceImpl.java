@@ -28,7 +28,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         } else if (countryName.equalsIgnoreCase(user.getOriginalCountry().getCountryName().toString())){
             return user;
         }else {
-            if(user.getServiceProviderList() == null|| valOfServiceProviderId(user, countryName)!=Integer.MAX_VALUE){
+            if(user.getServiceProviderList() == null|| valOfServiceProviderId(user, countryName)==Integer.MAX_VALUE){
                 throw new Exception("Unable to connect");
             } else {
                 //maskedIp is "updatedCountryCode.serviceProviderId.userId"
