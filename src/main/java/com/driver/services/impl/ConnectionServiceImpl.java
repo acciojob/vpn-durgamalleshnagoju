@@ -76,7 +76,7 @@ public class ConnectionServiceImpl implements ConnectionService {
                 sender = connect(senderId, receiverCountry);
 
             } catch (Exception e){
-                throw new Exception("Cannot establish communication");
+                throw new Exception("CommunicateSuccessful");
             }
         }
         senderCountry = getCountry(sender);
