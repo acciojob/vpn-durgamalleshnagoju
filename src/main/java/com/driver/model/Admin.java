@@ -4,31 +4,19 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "admin")
+@Table(name = "admins")
 public class Admin {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String userName;
+
+    private String username;
     private String password;
 
     @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL)
     private List<ServiceProvider> serviceProviders;
 
     public Admin() {
-    }
-
-    public Admin(int id, String userName, String password, List<ServiceProvider> serviceProviders) {
-        this.id = id;
-        this.userName = userName;
-        this.password = password;
-        this.serviceProviders = serviceProviders;
-    }
-
-    public Admin(String userName, String password) {
-        this.userName = userName;
-        this.password = password;
     }
 
     public int getId() {
@@ -40,17 +28,16 @@ public class Admin {
     }
 
     public String getUsername() {
-        return userName;
+        return username;
     }
 
-    public void setUsername(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
         return password;
     }
-    
 
     public void setPassword(String password) {
         this.password = password;

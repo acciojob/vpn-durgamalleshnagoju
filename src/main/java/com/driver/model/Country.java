@@ -4,22 +4,24 @@ package com.driver.model;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "countries")
 public class Country {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
+    @Enumerated(EnumType.STRING)
     private CountryName countryName;
+
     private String code;
 
-    @OneToOne
-    @JoinColumn
-    private User user;
 
     @ManyToOne
     @JoinColumn
     private ServiceProvider serviceProvider;
+
+
+    @OneToOne
+    private User user;
 
     public Country() {
     }
@@ -48,19 +50,19 @@ public class Country {
         this.code = code;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public ServiceProvider getServiceProvider() {
         return serviceProvider;
     }
 
     public void setServiceProvider(ServiceProvider serviceProvider) {
         this.serviceProvider = serviceProvider;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
