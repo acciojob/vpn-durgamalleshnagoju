@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
     public User register(String username, String password, String countryName) throws Exception{
         //The originalIp of the user should be "countryCode.userId"
         User user = new User();
-        user.setUserName(username);
+        user.setUsername(username);
         user.setPassword(password);
 
         Country country = new Country();
@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
         String originalIp = countryCode+"."+user.getId();
         country.setCode(countryCode);
         country.setUser(user);
-        user.setCountry(country);
+        user.setOriginalCountry(country);
 
         return userRepository3.save(user);
     }
@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
     public User subscribe(Integer userId, Integer serviceProviderId) {
         User user = userRepository3.findById(userId).get();
         ServiceProvider serviceProvider = serviceProviderRepository3.findById(serviceProviderId).get();
-        serviceProvider.getUserList().add(user);
+        serviceProvider.getUsers().add(user);
         user.getServiceProviderList().add(serviceProvider);
 
         return userRepository3.save(user);

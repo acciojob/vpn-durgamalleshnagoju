@@ -23,9 +23,9 @@ public class ConnectionServiceImpl implements ConnectionService {
     public User connect(int userId, String countryName) throws Exception{
         User user = userRepository2.findById(userId).get();
 
-        if(user.isConnected()){
+        if(user.getConnected()){
             throw new Exception("Already connected");
-        } else if (countryName.equalsIgnoreCase(user.getCountry().getCountryName().toString())){
+        } else if (countryName.equalsIgnoreCase(user.getOriginalCountry().getCountryName().toString())){
             return user;
         }else {
             if(user.getServiceProviderList().size()==0 || valOfServiceProviderId(user, countryName)!=Integer.MAX_VALUE){
@@ -51,7 +51,7 @@ public class ConnectionServiceImpl implements ConnectionService {
     @Override
     public User disconnect(int userId) throws Exception {
         User user = userRepository2.findById(userId).get();
-        if(!user.isConnected()){
+        if(!user.getConnected()){
             throw new Exception("Already disconnected");
         }
         user.setMaskedIp(null);
@@ -64,14 +64,14 @@ public class ConnectionServiceImpl implements ConnectionService {
         User sender = userRepository2.findById(senderId).get();
         User receiver = userRepository2.findById(receiverId).get();
 
-        String senderCountry = sender.getCountry().getCountryName().toString();
+        String senderCountry = sender.getOriginalCountry().getCountryName().toString();
         String receiverCountry ;
-        if(receiver.isConnected()){
+        if(receiver.getConnected()){
             receiverCountry = getCountry(receiver);
         } else {
-            receiverCountry = receiver.getCountry().getCountryName().toString();
+            receiverCountry = receiver.getOriginalCountry().getCountryName().toString();
         }
-        if(!senderCountry.equalsIgnoreCase(receiverCountry) && !sender.isConnected()){
+        if(!senderCountry.equalsIgnoreCase(receiverCountry) && !sender.getConnected()){
             try{
                 sender = connect(senderId, receiverCountry);
 
@@ -80,7 +80,7 @@ public class ConnectionServiceImpl implements ConnectionService {
             }
         }
         senderCountry = getCountry(sender);
-        if(!senderCountry.equals(receiverCountry) && sender.isConnected()){
+        if(!senderCountry.equals(receiverCountry) && sender.getConnected()){
             throw new Exception("they are not in the same country");
         }
         return sender;
@@ -111,8 +111,8 @@ public class ConnectionServiceImpl implements ConnectionService {
         return "";
     }
     private String getCountry(User user){
-        if(!user.isConnected()){
-            return user.getCountry().getCountryName().toString();
+        if(!user.getConnected()){
+            return user.getOriginalCountry().getCountryName().toString();
         }
         String maskedIp = user.getMaskedIp();
         String countryCode = maskedIp.substring(0,3);
