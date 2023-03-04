@@ -16,7 +16,7 @@ public class User {
 
     private String originalIp;
     private String maskedIp;
-    private boolean connected;
+    private Boolean connected;
 
     @ManyToMany(mappedBy = "userList",cascade = CascadeType.ALL)
     private  List<ServiceProvider> serviceProviderList;
@@ -70,7 +70,7 @@ public class User {
         this.maskedIp = maskedIp;
     }
 
-    public boolean getConnected() {
+    public Boolean getConnected() {
         return connected;
     }
 
