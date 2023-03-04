@@ -28,7 +28,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         } else if (countryName.equalsIgnoreCase(user.getOriginalCountry().getCountryName().toString())){
             return user;
         }else {
-            if(user.getServiceProviderList().size()==0 || valOfServiceProviderId(user, countryName)!=Integer.MAX_VALUE){
+            if(user.getServiceProviderList() == null|| valOfServiceProviderId(user, countryName)!=Integer.MAX_VALUE){
                 throw new Exception("Unable to connect");
             } else {
                 //maskedIp is "updatedCountryCode.serviceProviderId.userId"
@@ -66,23 +66,25 @@ public class ConnectionServiceImpl implements ConnectionService {
 
         String senderCountry = sender.getOriginalCountry().getCountryName().toString();
         String receiverCountry ;
+
         if(receiver.getConnected()){
             receiverCountry = getCountry(receiver);
         } else {
             receiverCountry = receiver.getOriginalCountry().getCountryName().toString();
         }
+
         if(!senderCountry.equalsIgnoreCase(receiverCountry) && !sender.getConnected()){
             try{
                 sender = connect(senderId, receiverCountry);
 
             } catch (Exception e){
-                throw new Exception("CommunicateSuccessful");
+                throw new Exception("Unable to connect");
             }
         }
-        senderCountry = getCountry(sender);
-        if(!senderCountry.equals(receiverCountry) && sender.getConnected()){
-            throw new Exception("they are not in the same country");
+        if(!senderCountry.equalsIgnoreCase(receiverCountry)){
+            sender = connect(senderId, receiverCountry);
         }
+
         return sender;
     }
 
